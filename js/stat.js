@@ -106,3 +106,29 @@ var cloudParams = [
     ]
   }
 ];
+
+var renderCloud = function(ctx, x, y, width, height, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, width, height);
+};
+
+window.renderStatistics = function (ctx, names, times, renderParams = cloudParams) {
+  // renderCloud(ctx, CLOUD_START_X, CLOUD_START_Y, CLOUD_WIDTH, CLOUD_HEIGHT, '#ccc'); // проверка размера облака
+  ctx.beginPath();
+  ctx.fillStyle = SHADOW_COLOR;
+  for (var i = 0; i < renderParams.length; i++) {
+    ctx[renderParams[i].method].apply(ctx, renderParams[i].params);
+  }
+  ctx.fill();
+  ctx.closePath();
+  ctx.beginPath();
+  ctx.fillStyle = CLOUD_COLOR;
+  for (var i = 0; i < renderParams.length; i++) {
+    renderParams[i].params[0] -= 10;
+    renderParams[i].params[1] -= 10;
+    ctx[renderParams[i].method].apply(ctx, renderParams[i].params);
+  }
+  ctx.fill();
+  ctx.closePath();
+
+};
