@@ -14,7 +14,7 @@ var STATISTIC_START_X = 150;
 var STATISTIC_START_Y = 100;
 var LETTER_WIDTH = 10;
 
-var cloudParams = [
+var CLOUD_PARAMS = [
   {
     method: 'arc',
     params: [
@@ -103,25 +103,25 @@ var cloudParams = [
   }
 ];
 
-var renderCloud = function(ctx, x, y, width, height, color) {
+var renderRectangle = function (ctx, x, y, width, height, color) {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, width, height);
 };
 
-window.renderStatistics = function (ctx, names, times, renderParams = cloudParams) {
+window.renderStatistics = function (ctx, names, times) {
   ctx.beginPath();
   ctx.fillStyle = SHADOW_COLOR;
-  for (var i = 0; i < renderParams.length; i++) {
-    ctx[renderParams[i].method].apply(ctx, renderParams[i].params);
+  for (var i = 0; i < CLOUD_PARAMS.length; i++) {
+    ctx[CLOUD_PARAMS[i].method].apply(ctx, CLOUD_PARAMS[i].params);
   }
   ctx.fill();
   ctx.closePath();
   ctx.beginPath();
   ctx.fillStyle = CLOUD_COLOR;
-  for (var i = 0; i < renderParams.length; i++) {
-    renderParams[i].params[0] -= 10;
-    renderParams[i].params[1] -= 10;
-    ctx[renderParams[i].method].apply(ctx, renderParams[i].params);
+  for (var j = 0; j < CLOUD_PARAMS.length; j++) {
+    CLOUD_PARAMS[j].params[0] -= 10;
+    CLOUD_PARAMS[j].params[1] -= 10;
+    ctx[CLOUD_PARAMS[j].method].apply(ctx, CLOUD_PARAMS[j].params);
   }
   ctx.fill();
   ctx.closePath();
@@ -131,27 +131,26 @@ window.renderStatistics = function (ctx, names, times, renderParams = cloudParam
   ctx.fillText('Ура вы победили!', 175, 47);
   ctx.fillText('Список результатов:', 185, 65);
   var maxTime = 0;
-  for (var i = 0; i < times.length; i++) {
-    maxTime = maxTime < times[i] ? times[i] : maxTime;
+  for (var k = 0; k < times.length; k++) {
+    maxTime = maxTime < times[k] ? times[k] : maxTime;
   }
   var marginLeft = STATISTIC_MARGIN_X + STATISTIC_WIDTH;
   var startX = STATISTIC_START_X;
   var nameStartY = STATISTIC_START_Y + STATISTIC_HEIGHT + NAME_TOP_MARGIN;
-  for (var i = 0; i < times.length; i++, startX += marginLeft) {
-    var height = Math.ceil(STATISTIC_HEIGHT * times[i] / maxTime);
+  for (var l = 0; l < times.length; l++, startX += marginLeft) {
+    var height = Math.ceil(STATISTIC_HEIGHT * times[l] / maxTime);
     var startY = STATISTIC_START_Y + STATISTIC_HEIGHT - height;
-    if (names[i] === 'Вы') {
-      var color = 'rgba(255, 0, 0, 1)';
-    } else {
+    var color = 'rgba(255, 0, 0, 1)';
+    if (names[l] !== 'Вы') {
       var saturation = Math.ceil(Math.random(0, 100) * 100);
-      var color = 'hsl(240deg, ' + saturation + '%, 50%)';
+      color = 'hsl(240deg, ' + saturation + '%, 50%)';
     }
-    renderCloud(ctx, startX, startY, STATISTIC_WIDTH, height, color);
-    var nameLength = names[i].length;
+    renderRectangle(ctx, startX, startY, STATISTIC_WIDTH, height, color);
+    var nameLength = names[l].length;
     var nameStartX = startX + STATISTIC_WIDTH / 2 - LETTER_WIDTH * nameLength / 2;
     ctx.fillStyle = TEXT_COLOR;
-    ctx.fillText(names[i], nameStartX, nameStartY);
-    var time = Math.ceil(times[i]).toString();
+    ctx.fillText(names[l], nameStartX, nameStartY);
+    var time = Math.ceil(times[l]).toString();
     var timeLength = time.length;
     var timeStartX = startX + STATISTIC_WIDTH / 2 - LETTER_WIDTH * timeLength / 2;
     var timeStartY = startY - TIME_TEXT_TOP_MARGIN;
