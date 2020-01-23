@@ -1,9 +1,5 @@
 'use strict';
 
-// var CLOUD_WIDTH = 420;
-// var CLOUD_HEIGHT = 270;
-// var CLOUD_START_X = 100;
-// var CLOUD_START_Y = 10;
 var CLOUD_COLOR = '#fff';
 var SHADOW_COLOR = 'rgba(0, 0, 0, 0.7)';
 var TEXT_COLOR = '#000';
@@ -113,7 +109,6 @@ var renderCloud = function(ctx, x, y, width, height, color) {
 };
 
 window.renderStatistics = function (ctx, names, times, renderParams = cloudParams) {
-  // renderCloud(ctx, CLOUD_START_X, CLOUD_START_Y, CLOUD_WIDTH, CLOUD_HEIGHT, '#ccc'); // проверка размера облака
   ctx.beginPath();
   ctx.fillStyle = SHADOW_COLOR;
   for (var i = 0; i < renderParams.length; i++) {
@@ -152,6 +147,14 @@ window.renderStatistics = function (ctx, names, times, renderParams = cloudParam
       var color = 'hsl(240deg, ' + saturation + '%, 50%)';
     }
     renderCloud(ctx, startX, startY, STATISTIC_WIDTH, height, color);
-
+    var nameLength = names[i].length;
+    var nameStartX = startX + STATISTIC_WIDTH / 2 - LETTER_WIDTH * nameLength / 2;
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.fillText(names[i], nameStartX, nameStartY);
+    var time = Math.ceil(times[i]).toString();
+    var timeLength = time.length;
+    var timeStartX = startX + STATISTIC_WIDTH / 2 - LETTER_WIDTH * timeLength / 2;
+    var timeStartY = startY - TIME_TEXT_TOP_MARGIN;
+    ctx.fillText(time, timeStartX, timeStartY);
   }
 };
