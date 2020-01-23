@@ -139,5 +139,19 @@ window.renderStatistics = function (ctx, names, times, renderParams = cloudParam
   for (var i = 0; i < times.length; i++) {
     maxTime = maxTime < times[i] ? times[i] : maxTime;
   }
+  var marginLeft = STATISTIC_MARGIN_X + STATISTIC_WIDTH;
+  var startX = STATISTIC_START_X;
+  var nameStartY = STATISTIC_START_Y + STATISTIC_HEIGHT + NAME_TOP_MARGIN;
+  for (var i = 0; i < times.length; i++, startX += marginLeft) {
+    var height = Math.ceil(STATISTIC_HEIGHT * times[i] / maxTime);
+    var startY = STATISTIC_START_Y + STATISTIC_HEIGHT - height;
+    if (names[i] === 'Вы') {
+      var color = 'rgba(255, 0, 0, 1)';
+    } else {
+      var saturation = Math.ceil(Math.random(0, 100) * 100);
+      var color = 'hsl(240deg, ' + saturation + '%, 50%)';
+    }
+    renderCloud(ctx, startX, startY, STATISTIC_WIDTH, height, color);
 
+  }
 };
