@@ -130,5 +130,14 @@ window.renderStatistics = function (ctx, names, times, renderParams = cloudParam
   }
   ctx.fill();
   ctx.closePath();
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.font = TEXT_PARAMS;
+  ctx.textBaseline = 'hanging';
+  ctx.fillText('Ура вы победили!', 175, 47);
+  ctx.fillText('Список результатов:', 185, 65);
+  var maxTime = 0;
+  for (var i = 0; i < times.length; i++) {
+    maxTime = maxTime < times[i] ? times[i] : maxTime;
+  }
 
 };
