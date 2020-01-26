@@ -16,17 +16,17 @@ var LETTER_WIDTH = 10;
 var MY_STATISTIC_COLOR = 'rgba(255, 0, 0, 1)';
 
 function Coord(x, y) {
-  return { x, y }
+  return {x: x, y: y};
 }
 
 var ctxCallBuilder = {
   'arc': function (ctx, center, radius) {
-    ctx.arc(center.x, center.y, radius, 0, CIRCUMFERENCE)
+    ctx.arc(center.x, center.y, radius, 0, CIRCUMFERENCE);
   },
   'ellipse': function (ctx, center, radiusX, radiusY) {
-    ctx.ellipse(center.x, center.y, radiusX, radiusY, 0, 0, CIRCUMFERENCE)
+    ctx.ellipse(center.x, center.y, radiusX, radiusY, 0, 0, CIRCUMFERENCE);
   }
-}
+};
 
 var CLOUD_SHAPE = [
   ['arc', 160, 140, 60],
@@ -37,17 +37,20 @@ var CLOUD_SHAPE = [
   ['ellipse', 380, 200, 140, 80],
   ['arc', 195, 160, 80],
   ['ellipse', 220, 220, 120, 60]
-]
+];
 
-var renderCloud = function (ctx, color, shift = new Coord(0, 0)) {
+var renderCloud = function (ctx, color, shift) {
+  if (!shift) {
+    shift = new Coord(0, 0);
+  }
   ctx.fillStyle = color;
-  ctx.beginPath()
+  ctx.beginPath();
   CLOUD_SHAPE.forEach(function (args) {
-    var center = new Coord(args[1] + shift.x, args[2] + shift.y)
-    ctxCallBuilder[args[0]](ctx, center, args[3], args[4])
-  })
-  ctx.closePath()
-  ctx.fill()
+    var center = new Coord(args[1] + shift.x, args[2] + shift.y);
+    ctxCallBuilder[args[0]](ctx, center, args[3], args[4]);
+  });
+  ctx.closePath();
+  ctx.fill();
 };
 
 var renderRectangle = function (ctx, x, y, width, height, color) {
@@ -63,50 +66,50 @@ var getTextStartX = function (startX, blockWidth, letterWidth, textLength) {
 window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, SHADOW_COLOR, new Coord(10, 10));
   renderCloud(ctx, CLOUD_COLOR, new Coord(0, 0));
-  
-    ctx.fillStyle = TEXT_COLOR;
-    ctx.font = TEXT_PARAMS;
-    ctx.textBaseline = 'hanging';
-    ctx.fillText('Ура вы победили!', 175, 47);
-    ctx.fillText('Список результатов:', 185, 65);
 
-    var maxTime = 0;
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.font = TEXT_PARAMS;
+  ctx.textBaseline = 'hanging';
+  ctx.fillText('Ура вы победили!', 175, 47);
+  ctx.fillText('Список результатов:', 185, 65);
 
-    // Math.max.apply(null, times)
-    // Math.max(...times)
-    times.forEach(function (value) {
-      maxTime = maxTime < value ? value : maxTime;
-    });
+  var maxTime = 0;
 
-    var marginLeft = STATISTIC_MARGIN_X + STATISTIC_WIDTH;
-    var startX = STATISTIC_START_X;
-    var nameStartY = STATISTIC_START_Y + STATISTIC_HEIGHT + NAME_TOP_MARGIN;
+  // Math.max.apply(null, times)
+  // Math.max(...times)
+  times.forEach(function (value) {
+    maxTime = maxTime < value ? value : maxTime;
+  });
 
-    for (var l = 0; l < times.length; l++, startX += marginLeft) {
-      var height = Math.ceil(STATISTIC_HEIGHT * times[l] / maxTime);
-      var startY = STATISTIC_START_Y + STATISTIC_HEIGHT - height;
-      
-      // Напрашивается функция getRectColor
-      var color = MY_STATISTIC_COLOR;
-    
-      if (names[l] !== 'Вы') {
-        var saturation = Math.ceil(Math.random(0, 100) * 100);
-        color = 'hsl(240deg, ' + saturation + '%, 50%)';
-      }
-    
-      renderRectangle(ctx, startX, startY, STATISTIC_WIDTH, height, color);
+  var marginLeft = STATISTIC_MARGIN_X + STATISTIC_WIDTH;
+  var startX = STATISTIC_START_X;
+  var nameStartY = STATISTIC_START_Y + STATISTIC_HEIGHT + NAME_TOP_MARGIN;
 
-      var nameLength = names[l].length;
-      var nameStartX = getTextStartX(startX, STATISTIC_WIDTH, LETTER_WIDTH, nameLength);
+  for (var l = 0; l < times.length; l++, startX += marginLeft) {
+    var height = Math.ceil(STATISTIC_HEIGHT * times[l] / maxTime);
+    var startY = STATISTIC_START_Y + STATISTIC_HEIGHT - height;
 
-      ctx.fillStyle = TEXT_COLOR; // Строка 67 дублирует то же самое, напрашивается функция renderText
+    // Напрашивается функция getRectColor
+    var color = MY_STATISTIC_COLOR;
 
-      ctx.fillText(names[l], nameStartX, nameStartY);
-      
-      var time = Math.ceil(times[l]).toString();
-      var timeLength = time.length;
-      var timeStartX = getTextStartX(startX, STATISTIC_WIDTH, LETTER_WIDTH, timeLength);
-      var timeStartY = startY - TIME_TEXT_TOP_MARGIN;
-      ctx.fillText(time, timeStartX, timeStartY);
+    if (names[l] !== 'Вы') {
+      var saturation = Math.ceil(Math.random(0, 100) * 100);
+      color = 'hsl(240deg, ' + saturation + '%, 50%)';
     }
+
+    renderRectangle(ctx, startX, startY, STATISTIC_WIDTH, height, color);
+
+    var nameLength = names[l].length;
+    var nameStartX = getTextStartX(startX, STATISTIC_WIDTH, LETTER_WIDTH, nameLength);
+
+    ctx.fillStyle = TEXT_COLOR; // Строка 67 дублирует то же самое, напрашивается функция renderText
+
+    ctx.fillText(names[l], nameStartX, nameStartY);
+
+    var time = Math.ceil(times[l]).toString();
+    var timeLength = time.length;
+    var timeStartX = getTextStartX(startX, STATISTIC_WIDTH, LETTER_WIDTH, timeLength);
+    var timeStartY = startY - TIME_TEXT_TOP_MARGIN;
+    ctx.fillText(time, timeStartX, timeStartY);
+  }
 };
