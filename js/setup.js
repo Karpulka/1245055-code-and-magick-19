@@ -18,6 +18,11 @@ var setupWizard = setupBlock.querySelector('.setup-wizard');
 var setupWizardCoat = setupWizard.querySelector('.wizard-coat');
 var setupWizardEyes = setupWizard.querySelector('.wizard-eyes');
 var setupWizardFireball = setupBlock.querySelector('.setup-fireball-wrap');
+var currentWizardProperties = {
+  eyesColor: setupWizardEyes.style.fill,
+  coatColor: setupWizardCoat.style.fill,
+  fireballColor: setupWizardFireball.style.background
+};
 
 var getRandomItemFromArray = function (array) {
   var min = 0;
@@ -49,12 +54,26 @@ var renderWizard = function (wizard) {
 };
 
 var getNextArrayElement = function (key, array) {
+  if (key === -1) {
+    return array[1];
+  }
   return key === array.length - 1 ? array[0] : array[key + 1];
 };
 
 var getWizardElementColor = function (color, colors) {
   var colorKey = colors.indexOf(color);
   return getNextArrayElement(colorKey, colors);
+};
+
+var renderWizardProperties = function () {
+  setupWizardCoat.style.fill = currentWizardProperties.coatColor;
+  setupWizardEyes.style.fill = currentWizardProperties.eyesColor;
+  setupWizardFireball.style.background = currentWizardProperties.fireballColor;
+};
+
+var setWizardProperties = function (propertyName, colors) {
+  currentWizardProperties[propertyName] = getWizardElementColor(currentWizardProperties[propertyName], colors);
+  renderWizardProperties();
 };
 
 if (setupBlock) {
@@ -70,14 +89,14 @@ if (setupBlock) {
 var openSetupBlock = function () {
   setupBlock.classList.remove('hidden');
   document.addEventListener('keydown', popupEscPressHandler);
-  setupWizardCoat.addEventListener('click', function (evt) {
-    evt.target.style.fill = getWizardElementColor(evt.target.style.fill, COAT_COLORS);
+  setupWizardCoat.addEventListener('click', function () {
+    setWizardProperties('coatColor', COAT_COLORS);
   });
-  setupWizardEyes.addEventListener('click', function (evt) {
-    evt.target.style.fill = getWizardElementColor(evt.target.style.fill, EYES_COLORS);
+  setupWizardEyes.addEventListener('click', function () {
+    setWizardProperties('eyesColor', EYES_COLORS);
   });
-  setupWizardFireball.addEventListener('click', function (evt) {
-    evt.currentTarget.style.background = getWizardElementColor(evt.currentTarget.style.background, FIREBALL_COLORS);
+  setupWizardFireball.addEventListener('click', function () {
+    setWizardProperties('fireballColor', FIREBALL_COLORS);
   });
 };
 
