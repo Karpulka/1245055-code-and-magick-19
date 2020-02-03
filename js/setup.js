@@ -8,6 +8,8 @@ var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var WIZARDS_COUNT = 4;
 var ENTER_KEY = 'Enter';
 var ESC_KEY = 'Escape';
+var ARROW_RIGHT_KEY = 'ArrowRight';
+var ARROW_LEFT_KEY = 'ArrowLeft';
 
 var setupBlock = document.querySelector('.setup');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
@@ -53,16 +55,19 @@ var renderWizard = function (wizard) {
   return wizardElement;
 };
 
-var getNextArrayElement = function (key, array) {
+var getNextArrayElement = function (key, array, direction) {
+  if (direction === ARROW_LEFT_KEY) {
+    return key < 1 ? array[array.length - 1] : array[key - 1];
+  }
   if (key === -1) {
     return array[1];
   }
   return key === array.length - 1 ? array[0] : array[key + 1];
 };
 
-var getWizardElementColor = function (color, colors) {
+var getWizardElementColor = function (color, colors, direction) {
   var colorKey = colors.indexOf(color);
-  return getNextArrayElement(colorKey, colors);
+  return getNextArrayElement(colorKey, colors, direction);
 };
 
 var renderWizardProperties = function () {
@@ -71,8 +76,8 @@ var renderWizardProperties = function () {
   setupWizardFireball.style.background = currentWizardProperties.fireballColor;
 };
 
-var setWizardProperties = function (propertyName, inputSelectorName, colors) {
-  currentWizardProperties[propertyName] = getWizardElementColor(currentWizardProperties[propertyName], colors);
+var setWizardProperties = function (propertyName, inputSelectorName, colors, direction) {
+  currentWizardProperties[propertyName] = getWizardElementColor(currentWizardProperties[propertyName], colors, direction);
   setupBlock.querySelector('input[name="' + inputSelectorName + '"]').value = currentWizardProperties[propertyName];
   renderWizardProperties();
 };
@@ -98,6 +103,21 @@ var openSetupBlock = function () {
   });
   setupWizardFireball.addEventListener('click', function () {
     setWizardProperties('fireballColor', 'fireball-color', FIREBALL_COLORS);
+  });
+  setupWizardCoat.addEventListener('keydown', function (evt) {
+    if (evt.key === ARROW_RIGHT_KEY || evt.key === ARROW_LEFT_KEY) {
+      setWizardProperties('coatColor', 'coat-color', COAT_COLORS, evt.key);
+    }
+  });
+  setupWizardEyes.addEventListener('keydown', function (evt) {
+    if (evt.key === ARROW_RIGHT_KEY || evt.key === ARROW_LEFT_KEY) {
+      setWizardProperties('eyesColor', 'eyes-color', EYES_COLORS, evt.key);
+    }
+  });
+  setupWizardFireball.addEventListener('keydown', function (evt) {
+    if (evt.key === ARROW_RIGHT_KEY || evt.key === ARROW_LEFT_KEY) {
+      setWizardProperties('fireballColor', 'fireball-color', FIREBALL_COLORS, evt.key);
+    }
   });
 };
 
