@@ -64,7 +64,7 @@ var closePopup = function () {
 };
 
 var popupEscPressHandler = function (evt) {
-  if (evt.key === ESC_KEY) {
+  if (!evt.target.classList.contains('setup-user-name') && evt.key === ESC_KEY) {
     closePopup();
   }
 };
