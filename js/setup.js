@@ -71,8 +71,9 @@ var renderWizardProperties = function () {
   setupWizardFireball.style.background = currentWizardProperties.fireballColor;
 };
 
-var setWizardProperties = function (propertyName, colors) {
+var setWizardProperties = function (propertyName, inputSelectorName, colors) {
   currentWizardProperties[propertyName] = getWizardElementColor(currentWizardProperties[propertyName], colors);
+  setupBlock.querySelector('input[name="' + inputSelectorName + '"]').value = currentWizardProperties[propertyName];
   renderWizardProperties();
 };
 
@@ -90,13 +91,13 @@ var openSetupBlock = function () {
   setupBlock.classList.remove('hidden');
   document.addEventListener('keydown', popupEscPressHandler);
   setupWizardCoat.addEventListener('click', function () {
-    setWizardProperties('coatColor', COAT_COLORS);
+    setWizardProperties('coatColor', 'coat-color', COAT_COLORS);
   });
   setupWizardEyes.addEventListener('click', function () {
-    setWizardProperties('eyesColor', EYES_COLORS);
+    setWizardProperties('eyesColor', 'eyes-color', EYES_COLORS);
   });
   setupWizardFireball.addEventListener('click', function () {
-    setWizardProperties('fireballColor', FIREBALL_COLORS);
+    setWizardProperties('fireballColor', 'fireball-color', FIREBALL_COLORS);
   });
 };
 
