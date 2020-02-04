@@ -38,6 +38,7 @@ input:focus
 {
     outline: none;
     box-shadow: 0 0 10px #fff000;
+    stroke: #fff000;
 }
 
 form
