@@ -42,7 +42,6 @@
 
   window.util = {
     arrowLeftKey: ARROW_LEFT_KEY,
-    setupBlock: document.querySelector('.setup'),
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
     isLeftOrRightArrowEvent: isLeftOrRightArrowEvent,

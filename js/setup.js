@@ -1,9 +1,13 @@
 'use strict';
 
 (function () {
-  var setupBlock = window.util.setupBlock;
+  var setupBlock = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = setupBlock.querySelector('.setup-close');
+  var defaultCoordinates = {
+    x: setupBlock.offsetLeft,
+    y: setupBlock.offsetTop
+  };
 
   window.otherWizards.showOtherWizards();
 
@@ -27,12 +31,19 @@
     setupBlock.classList.remove('hidden');
     document.addEventListener('keydown', popupEscPressHandler);
     window.wizard.wizardSettingsAddEventListeners();
+
+    defaultCoordinates = {
+      x: setupBlock.offsetLeft,
+      y: setupBlock.offsetTop
+    };
   };
 
   var closePopup = function () {
     setupBlock.classList.add('hidden');
     document.removeEventListener('keydown', popupEscPressHandler);
     window.wizard.wizardSettingsRemoveEventListeners();
+    setupBlock.style.left = defaultCoordinates.x + 'px';
+    setupBlock.style.top = defaultCoordinates.y + 'px';
   };
 
   var closePopupByEsc = function (evt) {

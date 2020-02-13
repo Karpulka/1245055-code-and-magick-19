@@ -7,7 +7,7 @@
   var EYES_COLORS = window.wizard.EYES_COLORS;
   var WIZARDS_COUNT = 4;
 
-  var setupBlock = window.util.setupBlock;
+  var setupBlock = document.querySelector('.setup');
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var similarListElement = setupBlock.querySelector('.setup-similar-list');
 
