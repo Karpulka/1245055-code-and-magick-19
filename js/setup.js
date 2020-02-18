@@ -9,8 +9,6 @@
     y: setupBlock.offsetTop
   };
 
-  window.otherWizards.showOtherWizards();
-
   setupOpen.addEventListener('click', function () {
     openSetupBlock();
   });
@@ -28,6 +26,7 @@
   });
 
   var openSetupBlock = function () {
+    window.otherWizards.showOtherWizards();
     setupBlock.classList.remove('hidden');
     document.addEventListener('keydown', popupEscPressHandler);
     window.wizard.wizardSettingsAddEventListeners();
