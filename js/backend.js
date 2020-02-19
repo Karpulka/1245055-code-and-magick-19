@@ -32,7 +32,7 @@
     xhr.addEventListener('timeout', onTimeoutErrorLoad);
 
     if (data) {
-      url = 'https://js.dump.academy/code-and-magick1';
+      url = 'https://js.dump.academy/code-and-magick';
       xhr.open('POST', url);
       xhr.send(data);
     } else {
