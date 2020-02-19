@@ -40,12 +40,32 @@
     return array[Math.floor(Math.random() * (max - min)) + min];
   };
 
+  var showErrorMessage = function (message) {
+    var errorWindow = document.querySelector('.error-message');
+    if (errorWindow) {
+      errorWindow.querySelector('.error-description').textContent = message;
+    } else {
+      var fragment = document.createDocumentFragment();
+      var errorContentBlock = document.createElement('div');
+      var errorTitleBlock = document.createElement('div');
+      var errorMessageBlock = document.createElement('div');
+      errorContentBlock.classList.add('error-message', 'hidden');
+      errorTitleBlock.classList.add('error-title');
+      errorMessageBlock.classList.add('error-description');
+      errorMessageBlock.textContent = message;
+      fragment.appendChild(errorContentBlock).appendChild(errorTitleBlock).appendChild(errorMessageBlock);
+      document.querySelector('body').appendChild(fragment);
+      document.querySelector('.error-message').classList.remove('hidden');
+    }
+  };
+
   window.util = {
     arrowLeftKey: ARROW_LEFT_KEY,
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
     isLeftOrRightArrowEvent: isLeftOrRightArrowEvent,
     getRandomItemFromArray: getRandomItemFromArray,
-    getNextArrayElement: getNextArrayElement
+    getNextArrayElement: getNextArrayElement,
+    showErrorMessage: showErrorMessage
   };
 })();

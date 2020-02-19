@@ -8,22 +8,7 @@
     x: setupBlock.offsetLeft,
     y: setupBlock.offsetTop
   };
-
-  setupOpen.addEventListener('click', function () {
-    openSetupBlock();
-  });
-
-  setupOpen.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, openSetupBlock);
-  });
-
-  setupClose.addEventListener('click', function () {
-    closePopup();
-  });
-
-  setupClose.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, closePopup);
-  });
+  var setupForm = setupBlock.querySelector('.setup-wizard-form');
 
   var openSetupBlock = function () {
     window.otherWizards.showOtherWizards();
@@ -54,4 +39,31 @@
   var popupEscPressHandler = function (evt) {
     window.util.isEscEvent(evt, closePopupByEsc.bind(undefined, evt));
   };
+
+  var onLoad = function () {
+    closePopup();
+  };
+
+  var submitFormHandler = function (evt) {
+    evt.preventDefault();
+    window.backend.save(onLoad, window.util.showErrorMessage, new FormData(setupForm));
+  };
+
+  setupOpen.addEventListener('click', function () {
+    openSetupBlock();
+  });
+
+  setupOpen.addEventListener('keydown', function (evt) {
+    window.util.isEnterEvent(evt, openSetupBlock);
+  });
+
+  setupClose.addEventListener('click', function () {
+    closePopup();
+  });
+
+  setupClose.addEventListener('keydown', function (evt) {
+    window.util.isEnterEvent(evt, closePopup);
+  });
+
+  setupForm.addEventListener('submit', submitFormHandler);
 })();

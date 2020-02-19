@@ -32,10 +32,8 @@
         setupBlock.querySelector('.setup-similar').classList.remove('hidden');
       }
     };
-    var onError = function (message) {
-      console.log(message);
-    };
-    window.backend.load(onLoad, onError);
+
+    window.backend.load(onLoad, window.util.showErrorMessage);
   };
 
   window.otherWizards = {
