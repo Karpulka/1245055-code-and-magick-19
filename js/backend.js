@@ -7,21 +7,29 @@
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
-    xhr.addEventListener('load', function () {
+    var onDataLoad = function () {
       if (xhr.status === 200) {
         onLoad(xhr.response);
       } else {
         onError('Произошла ошибка. Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
-    });
 
-    xhr.addEventListener('error', function () {
+      xhr.removeEventListener('load', onDataLoad);
+    };
+
+    var onErrorLoad = function () {
       onError('Произошла ошибка соединения');
-    });
+    };
 
-    xhr.addEventListener('timeout', function () {
+    var onTimeoutErrorLoad = function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-    });
+    };
+
+    xhr.addEventListener('load', onDataLoad);
+
+    xhr.addEventListener('error', onErrorLoad);
+
+    xhr.addEventListener('timeout', onTimeoutErrorLoad);
 
     xhr.open('GET', url);
     xhr.send();

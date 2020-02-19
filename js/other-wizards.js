@@ -26,7 +26,6 @@
         }
         var fragment = document.createDocumentFragment();
         for (var i = 0; i < count; i++) {
-          console.log(window.util.getRandomItemFromArray(data));
           fragment.appendChild(renderWizard(window.util.getRandomItemFromArray(data)));
         }
         similarListElement.appendChild(fragment);
