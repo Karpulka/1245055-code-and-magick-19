@@ -25,9 +25,10 @@
           similarListElement.textContent = '';
         }
         var fragment = document.createDocumentFragment();
-        for (var i = 0; i < count; i++) {
-          fragment.appendChild(renderWizard(window.util.getRandomItemFromArray(data)));
-        }
+        var shuffleWizards = window.util.shuffle(data).slice(0, count);
+        shuffleWizards.forEach(function (wizard) {
+          fragment.appendChild(renderWizard(wizard));
+        });
         similarListElement.appendChild(fragment);
         setupBlock.querySelector('.setup-similar').classList.remove('hidden');
       }
