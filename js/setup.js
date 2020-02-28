@@ -44,7 +44,7 @@
     closePopup();
   };
 
-  var submitFormHandler = function (evt) {
+  var onFormSubmit = function (evt) {
     evt.preventDefault();
     window.backend.save(onLoad, window.util.showErrorMessage, new FormData(setupForm));
   };
@@ -65,5 +65,5 @@
     window.util.isEnterEvent(evt, closePopup);
   });
 
-  setupForm.addEventListener('submit', submitFormHandler);
+  setupForm.addEventListener('submit', onFormSubmit);
 })();
