@@ -1,14 +1,28 @@
 'use strict';
 
 (function () {
-  var url = '';
+  var RequestUrl = {
+    URL_LOAD: 'https://js.dump.academy/code-and-magick/data',
+    URL_SEND: 'https://js.dump.academy/code-and-magick'
+  };
 
-  var sendRequest = function (onLoad, onError, data) {
+  var Method = {
+    GET: 'GET',
+    POST: 'POST'
+  };
+
+  var StatusCode = {
+    OK: 200
+  };
+
+  var sendRequest = function (method, url, onLoad, onError, data) {
+    method = method ? method : Method.GET;
+    url = url ? url : RequestUrl.URL_LOAD;
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     var onDataLoad = function () {
-      if (xhr.status === 200) {
+      if (xhr.status === StatusCode.OK) {
         onLoad(xhr.response);
       } else {
         onError('Произошла ошибка. Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -31,19 +45,16 @@
 
     xhr.addEventListener('timeout', onTimeoutErrorLoad);
 
-    if (data) {
-      url = 'https://js.dump.academy/code-and-magick';
-      xhr.open('POST', url);
-      xhr.send(data);
-    } else {
-      url = 'https://js.dump.academy/code-and-magick/data';
-      xhr.open('GET', url);
-      xhr.send();
-    }
+    xhr.open(method, url);
+    xhr.send(data);
+  };
+
+  var prefillRequest = function (method, url) {
+    return sendRequest.bind(null, method, url);
   };
 
   window.backend = {
-    load: sendRequest,
-    save: sendRequest
+    load: prefillRequest(Method.GET, RequestUrl.URL_LOAD),
+    save: prefillRequest(Method.POST, RequestUrl.URL_SEND)
   };
 })();
