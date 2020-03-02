@@ -40,7 +40,7 @@
     ];
     setupBlock.querySelector('input[name="' + inputSelectorName + '"]').value = currentWizardProperties[propertyName];
     renderWizardProperties();
-    window.otherWizards.editStartWizardProperties(properties);
+    window.debounce(window.otherWizards.editStartWizardProperties(properties));
   };
 
   var wizardSettingsAddEventListeners = function () {
@@ -72,13 +72,13 @@
       setWizardProperties('fireballColor', 'fireball-color', FIREBALL_COLORS);
     },
     keydownSetCoatColorHandler: function (evt) {
-      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties('coatColor', 'coat-color', COAT_COLORS, evt.key));
+      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties.bind(null, 'coatColor', 'coat-color', COAT_COLORS, evt.key));
     },
     keydownSetEyesColorHandler: function (evt) {
-      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties('eyesColor', 'eyes-color', EYES_COLORS, evt.key));
+      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties.bind(null, 'eyesColor', 'eyes-color', EYES_COLORS, evt.key));
     },
     keydownSetFireballColorHandler: function (evt) {
-      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties('fireballColor', 'fireball-color', FIREBALL_COLORS, evt.key));
+      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties.bind(null, 'fireballColor', 'fireball-color', FIREBALL_COLORS, evt.key));
     }
   };
 

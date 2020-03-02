@@ -26,7 +26,7 @@
     }
 
     return rank;
-  }
+  };
 
   var editStartWizardProperties = function (properties) {
     properties.forEach(function (property) {
