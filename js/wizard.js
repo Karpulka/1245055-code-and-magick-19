@@ -28,8 +28,19 @@
 
   var setWizardProperties = function (propertyName, inputSelectorName, colors, direction) {
     currentWizardProperties[propertyName] = getWizardElementColor(currentWizardProperties[propertyName], colors, direction);
+    var properties = [
+      {
+        name: 'eyesColor',
+        value: currentWizardProperties.eyesColor
+      },
+      {
+        name: 'coatColor',
+        value: currentWizardProperties.coatColor
+      }
+    ];
     setupBlock.querySelector('input[name="' + inputSelectorName + '"]').value = currentWizardProperties[propertyName];
     renderWizardProperties();
+    window.otherWizards.editStartWizardProperties(properties);
   };
 
   var wizardSettingsAddEventListeners = function () {
@@ -72,9 +83,6 @@
   };
 
   window.wizard = {
-    COAT_COLORS: COAT_COLORS,
-    EYES_COLORS: EYES_COLORS,
-    FIREBALL_COLORS: FIREBALL_COLORS,
     wizardSettingsAddEventListeners: wizardSettingsAddEventListeners,
     wizardSettingsRemoveEventListeners: wizardSettingsRemoveEventListeners
   };
