@@ -28,8 +28,19 @@
 
   var setWizardProperties = function (propertyName, inputSelectorName, colors, direction) {
     currentWizardProperties[propertyName] = getWizardElementColor(currentWizardProperties[propertyName], colors, direction);
+    var properties = [
+      {
+        name: 'eyesColor',
+        value: currentWizardProperties.eyesColor
+      },
+      {
+        name: 'coatColor',
+        value: currentWizardProperties.coatColor
+      }
+    ];
     setupBlock.querySelector('input[name="' + inputSelectorName + '"]').value = currentWizardProperties[propertyName];
     renderWizardProperties();
+    window.debounce(window.otherWizards.editStartWizardProperties(properties));
   };
 
   var wizardSettingsAddEventListeners = function () {
@@ -61,20 +72,17 @@
       setWizardProperties('fireballColor', 'fireball-color', FIREBALL_COLORS);
     },
     keydownSetCoatColorHandler: function (evt) {
-      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties('coatColor', 'coat-color', COAT_COLORS, evt.key));
+      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties.bind(null, 'coatColor', 'coat-color', COAT_COLORS, evt.key));
     },
     keydownSetEyesColorHandler: function (evt) {
-      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties('eyesColor', 'eyes-color', EYES_COLORS, evt.key));
+      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties.bind(null, 'eyesColor', 'eyes-color', EYES_COLORS, evt.key));
     },
     keydownSetFireballColorHandler: function (evt) {
-      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties('fireballColor', 'fireball-color', FIREBALL_COLORS, evt.key));
+      window.util.isLeftOrRightArrowEvent(evt, setWizardProperties.bind(null, 'fireballColor', 'fireball-color', FIREBALL_COLORS, evt.key));
     }
   };
 
   window.wizard = {
-    COAT_COLORS: COAT_COLORS,
-    EYES_COLORS: EYES_COLORS,
-    FIREBALL_COLORS: FIREBALL_COLORS,
     wizardSettingsAddEventListeners: wizardSettingsAddEventListeners,
     wizardSettingsRemoveEventListeners: wizardSettingsRemoveEventListeners
   };
